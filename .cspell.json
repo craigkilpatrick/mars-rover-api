@@ -1,0 +1,26 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "APP",
+    "ARGS",
+    "BASE",
+    "bootJar",
+    "CMD",
+    "deps",
+    "docker",
+    "DOCKER",
+    "gradle",
+    "GRADLE",
+    "hamcrest",
+    "hateoas",
+    "IMAGE",
+    "marsrover",
+    "NAME",
+    "RUN",
+    "servlet",
+    "SHA",
+    "springframework",
+    "TAG"
+  ]
+}
