@@ -185,10 +185,12 @@ class RoverControllerTests {
 
 	@Test
 	void whenCommandsSentToNonExistentRover_thenNotFound() throws Exception {
+		// Arrange
 		char[] commands = {'L', 'R', 'M'};
 
 		Mockito.when(repository.findById(Mockito.any(Long.class))).thenReturn(Optional.empty());
 
+		// Act & Assert
 		mockMvc.perform(post("/rovers/{id}/commands", 99L)
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(objectMapper.writeValueAsString(commands)))
