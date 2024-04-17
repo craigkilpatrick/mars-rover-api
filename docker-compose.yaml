@@ -1,0 +1,30 @@
+version: '3.9'
+services:
+  mars-rover-api:
+    image: ${APP_NAME}:${SHA_TAG:-localdev}
+    container_name: ${APP_NAME}
+    hostname: ${APP_NAME}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
+      - JAVA_ENABLE_DEBUG=${JAVA_ENABLE_DEBUG}
+      - JAVA_DEBUG_PORT=${JAVA_DEBUG_PORT}
+    ports:
+      - '${APP_PORT}:8080'
+      - '${JAVA_DEBUG_PORT}:${JAVA_DEBUG_PORT}'
+    healthcheck:
+      test:
+        ['CMD', 'curl', '-f', 'http://localhost:${APP_PORT}/hello']
+      start_period: 20s
+      interval: 30s
+      retries: 3
+      timeout: 10s
+    networks:
+      - frontend
+    # volumes:
+    #   - .:/app
+networks:
+  frontend:
+    name: frontend
