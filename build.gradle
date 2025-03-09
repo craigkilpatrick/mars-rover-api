@@ -42,8 +42,9 @@ configurations.all {
 	resolutionStrategy {
 		eachDependency { DependencyResolveDetails details ->
 			// Reject versions that contain alpha, beta, RC, M (milestone), or snapshot
-			if (details.requested.version =~ /(?i).*(alpha|beta|rc|m[0-9]+|snapshot).*/) {
-				throw new GradleException("Unstable version detected: ${details.requested}")
+			// Ensure only dependency versions are checked (not Gradle task names)
+			if (details.requested.version && details.requested.version =~ /(?i)-?(alpha|beta|rc|m[0-9]+|snapshot)[.\d-]*/) {
+					throw new GradleException("Unstable version detected: ${details.requested}")
 			}
 		}
 	}

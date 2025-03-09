@@ -29,7 +29,7 @@ jobs:
         id: dependency-check
         run: |
           ./gradlew dependencies --no-daemon | tee dependencies.txt
-          if grep -E "(alpha|beta|rc|m[0-9]+|snapshot)" dependencies.txt; then
+          if grep -E "/(?i)-?(alpha|beta|rc|m[0-9]+|snapshot)[.\d-]*/)" dependencies.txt; then
             echo "❌ Unstable dependency found!"
             exit 1
           fi
