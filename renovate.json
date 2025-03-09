@@ -1,0 +1,35 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:base"],
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["org.springframework.boot"],
+      "allowedVersions": "3.2.x"
+    },
+    {
+      "matchPackagePatterns": ["org.springdoc"],
+      "allowedVersions": "2.6.x"
+    },
+    {
+      "matchPackagePatterns": ["io.swagger.core.v3"],
+      "allowedVersions": "2.2.x"
+    },
+    {
+      "matchPackagePatterns": ["jakarta.persistence", "jakarta.validation"],
+      "allowedVersions": "3.1.x"
+    }
+  ],
+  "automerge": true,
+  "labels": ["dependencies", "renovate"],
+  "assignees": ["craigkilpatrick"],
+  "reviewers": ["craigkilpatrick"],
+  "dependencyDashboard": true,
+  "prHourlyLimit": 2,
+  "prConcurrentLimit": 5,
+  "ignoreDeps": [
+    "org.springframework.boot:3.3.x",
+    "org.springframework:spring-core:6.1.x",
+    "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.x",
+    "org.mockito:mockito-core:5.11.x"
+  ]
+}
