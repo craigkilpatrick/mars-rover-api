@@ -1,6 +1,5 @@
 # Mars Rover API
 
-[![Build Status](https://github.com/craigkilpatrick/mars-rover-api/actions/workflows/dependency-check.yml/badge.svg)](https://github.com/craigkilpatrick/mars-rover-api/actions/workflows/dependency-check.yml)
 [![Gradle Build](https://github.com/craigkilpatrick/mars-rover-api/actions/workflows/gradle.yml/badge.svg)](https://github.com/craigkilpatrick/mars-rover-api/actions/workflows/gradle.yml)
 [![Code Coverage](https://codecov.io/gh/craigkilpatrick/mars-rover-api/branch/main/graph/badge.svg)](https://codecov.io/gh/craigkilpatrick/mars-rover-api)
 [![Java Version](https://img.shields.io/badge/Java-17-blue?logo=java)](https://www.oracle.com/java/)
