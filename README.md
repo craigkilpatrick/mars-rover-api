@@ -7,8 +7,7 @@
 [![Code Coverage](https://codecov.io/gh/craigkilpatrick/mars-rover-api/branch/main/graph/badge.svg)](https://codecov.io/gh/craigkilpatrick/mars-rover-api)
 [![Java Version](https://img.shields.io/badge/Java-17-blue?logo=java)](https://www.oracle.com/java/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.4-brightgreen?logo=springboot)](https://spring.io/projects/spring-boot)
-[![License](https://img.shields.io/github/license/craigkilpatrick/mars-rover-api)](https://github.com/craigkilpatrick/mars-rover-api/blob/main/LICENSE)
-[![Dependabot](https://img.shields.io/badge/Dependabot-enabled-brightgreen?logo=dependabot)](https://github.com/craigkilpatrick/mars-rover-api/network/updates)
+[![Renovate](https://img.shields.io/badge/Renovate-enabled-brightgreen?logo=renovatebot)](https://github.com/craigkilpatrick/mars-rover-api/issues)
 
 This repository is meant to serve as a starting point for the [Mars Rover Kata](https://kata-log.rocks/mars-rover-kata) exercise that is used to teach [Test Driven Development (TDD)](https://martinfowler.com/bliki/TestDrivenDevelopment.html).
 
