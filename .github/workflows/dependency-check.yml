@@ -26,7 +26,12 @@ jobs:
         uses: gradle/wrapper-validation-action@v2
 
       - name: Run Dependency Check
-        run: ./gradlew dependencies --no-daemon
+        run: |
+          ./gradlew dependencies --no-daemon | tee dependencies.txt
+          if grep -E "(alpha|beta|rc|m[0-9]+|snapshot)" dependencies.txt; then
+            echo "❌ Unstable dependency found!"
+            exit 1
+          fi
 
       - name: Build Project
         run: ./gradlew build --no-daemon
