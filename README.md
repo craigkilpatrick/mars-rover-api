@@ -2,12 +2,18 @@
 
 # Mars Rover API
 
+# Mars Rover API
+
 [![Build Status](https://github.com/craigkilpatrick/mars-rover-api/actions/workflows/dependency-check.yml/badge.svg)](https://github.com/craigkilpatrick/mars-rover-api/actions/workflows/dependency-check.yml)
 [![Gradle Build](https://github.com/craigkilpatrick/mars-rover-api/actions/workflows/gradle.yml/badge.svg)](https://github.com/craigkilpatrick/mars-rover-api/actions/workflows/gradle.yml)
 [![Code Coverage](https://codecov.io/gh/craigkilpatrick/mars-rover-api/branch/main/graph/badge.svg)](https://codecov.io/gh/craigkilpatrick/mars-rover-api)
 [![Java Version](https://img.shields.io/badge/Java-17-blue?logo=java)](https://www.oracle.com/java/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.4-brightgreen?logo=springboot)](https://spring.io/projects/spring-boot)
 [![Renovate](https://img.shields.io/badge/Renovate-enabled-brightgreen?logo=renovatebot)](https://github.com/craigkilpatrick/mars-rover-api/issues)
+[![Latest Release](https://img.shields.io/github/v/release/craigkilpatrick/mars-rover-api?include_prereleases&logo=github)](https://github.com/craigkilpatrick/mars-rover-api/releases)
+[![Security Status](https://img.shields.io/librariesio/github/craigkilpatrick/mars-rover-api)](https://github.com/craigkilpatrick/mars-rover-api/security/dependabot)
+[![Open Issues](https://img.shields.io/github/issues/craigkilpatrick/mars-rover-api)](https://github.com/craigkilpatrick/mars-rover-api/issues)
+[![Contributors](https://img.shields.io/github/contributors/craigkilpatrick/mars-rover-api?color=blue)](https://github.com/craigkilpatrick/mars-rover-api/graphs/contributors)
 
 This repository is meant to serve as a starting point for the [Mars Rover Kata](https://kata-log.rocks/mars-rover-kata) exercise that is used to teach [Test Driven Development (TDD)](https://martinfowler.com/bliki/TestDrivenDevelopment.html).
 
