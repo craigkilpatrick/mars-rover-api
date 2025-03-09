@@ -26,6 +26,7 @@ jobs:
         uses: gradle/wrapper-validation-action@v2
 
       - name: Run Dependency Check
+        id: dependency-check
         run: |
           ./gradlew dependencies --no-daemon | tee dependencies.txt
           if grep -E "(alpha|beta|rc|m[0-9]+|snapshot)" dependencies.txt; then
@@ -35,3 +36,29 @@ jobs:
 
       - name: Build Project
         run: ./gradlew build --no-daemon
+
+  close-failed-pr:
+    needs: dependency-check
+    if: failure() && github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Comment on PR
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ❌ This Dependabot PR contains unstable dependencies and has failed validation.
+            It will be automatically closed. Please check dependency requirements before reopening.
+
+      - name: Close PR
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              state: "closed"
+            })
