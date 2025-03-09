@@ -24,13 +24,13 @@ jobs:
           cache: 'gradle'
 
       - name: Validate Gradle Wrapper
-        uses: gradle/wrapper-validation-action@v5
+        uses: gradle/wrapper-validation-action@v2
 
       - name: Run Tests with Coverage
         run: ./gradlew clean test jacocoTestReport --no-daemon
 
       - name: Upload Coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: build/reports/jacoco/test/jacocoTestReport.xml
