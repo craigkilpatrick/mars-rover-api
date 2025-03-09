@@ -24,7 +24,7 @@ jobs:
           cache: 'gradle'
 
       - name: Validate Gradle Wrapper
-        uses: gradle/actions/wrapper-validation@v43
+        uses: gradle/actions/wrapper-validation@v4
 
       - name: Run Tests with Coverage
         run: ./gradlew clean test jacocoTestReport --no-daemon
