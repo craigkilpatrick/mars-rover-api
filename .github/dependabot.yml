@@ -1,0 +1,17 @@
+version: 2
+updates:
+  - package-ecosystem: "gradle"
+    directory: "/" # Root directory where build.gradle is located
+    schedule:
+      interval: "daily" # Check for updates daily
+    open-pull-requests-limit: 5
+    ignore:
+      - dependency-name: "jakarta.persistence:jakarta.persistence-api"
+        versions: ["3.1.0"] # Example: Ignore specific versions
+    reviewers:
+      - "craigkilpatrick" # Auto-assign PRs to a reviewer
+    assignees:
+      - "craigkilpatrick" # Auto-assign issues to a user
+    labels:
+      - "dependencies"
+      - "gradle"

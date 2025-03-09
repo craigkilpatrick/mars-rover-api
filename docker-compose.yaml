@@ -1,4 +1,3 @@
-version: '3.9'
 services:
   mars-rover-api:
     image: ${APP_NAME}:${SHA_TAG:-localdev}

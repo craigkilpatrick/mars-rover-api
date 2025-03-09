@@ -2,6 +2,7 @@ FROM eclipse-temurin:21
 
 WORKDIR /app
 
+ARG JAVA_ENABLE_DEBUG
 ENV JAVA_ENABLE_DEBUG=${JAVA_ENABLE_DEBUG}
 ENV JAR=mars-rover-api.jar
 
