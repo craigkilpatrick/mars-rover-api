@@ -1,28 +1,46 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:base"],
+  "extends": [
+    "config:recommended"
+  ],
   "packageRules": [
     {
-      "matchPackagePatterns": ["org.springframework.boot"],
-      "allowedVersions": "3.2.x"
+      "allowedVersions": "3.2.x",
+      "matchPackageNames": [
+        "/org.springframework.boot/"
+      ]
     },
     {
-      "matchPackagePatterns": ["org.springdoc"],
-      "allowedVersions": "2.6.x"
+      "allowedVersions": "2.6.x",
+      "matchPackageNames": [
+        "/org.springdoc/"
+      ]
     },
     {
-      "matchPackagePatterns": ["io.swagger.core.v3"],
-      "allowedVersions": "2.2.x"
+      "allowedVersions": "2.2.x",
+      "matchPackageNames": [
+        "/io.swagger.core.v3/"
+      ]
     },
     {
-      "matchPackagePatterns": ["jakarta.persistence", "jakarta.validation"],
-      "allowedVersions": "3.1.x"
+      "allowedVersions": "3.1.x",
+      "matchPackageNames": [
+        "/jakarta.persistence/",
+        "/jakarta.validation/"
+      ]
     }
   ],
   "automerge": true,
-  "labels": ["dependencies", "renovate"],
-  "assignees": ["craigkilpatrick"],
-  "reviewers": ["craigkilpatrick"],
+  "labels": [
+    "dependencies",
+    "renovate"
+  ],
+  "assignees": [
+    "craigkilpatrick"
+  ],
+  "reviewers": [
+    "craigkilpatrick"
+  ],
   "dependencyDashboard": true,
   "prHourlyLimit": 2,
   "prConcurrentLimit": 5,
