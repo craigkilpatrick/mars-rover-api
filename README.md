@@ -4,7 +4,7 @@
 
 [![Build Status](https://github.com/craigkilpatrick/mars-rover-api/actions/workflows/dependency-check.yml/badge.svg)](https://github.com/craigkilpatrick/mars-rover-api/actions/workflows/dependency-check.yml)
 [![Gradle Build](https://github.com/craigkilpatrick/mars-rover-api/actions/workflows/gradle.yml/badge.svg)](https://github.com/craigkilpatrick/mars-rover-api/actions/workflows/gradle.yml)
-[![Code Coverage](https://img.shields.io/codecov/c/github/craigkilpatrick/mars-rover-api?logo=codecov)](https://codecov.io/gh/craigkilpatrick/mars-rover-api)
+[![Code Coverage](https://codecov.io/gh/craigkilpatrick/mars-rover-api/branch/main/graph/badge.svg)](https://codecov.io/gh/craigkilpatrick/mars-rover-api)
 [![Java Version](https://img.shields.io/badge/Java-17-blue?logo=java)](https://www.oracle.com/java/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.4-brightgreen?logo=springboot)](https://spring.io/projects/spring-boot)
 [![License](https://img.shields.io/github/license/craigkilpatrick/mars-rover-api)](https://github.com/craigkilpatrick/mars-rover-api/blob/main/LICENSE)
