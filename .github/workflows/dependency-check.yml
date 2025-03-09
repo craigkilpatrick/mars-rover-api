@@ -23,7 +23,7 @@ jobs:
           cache: 'gradle'
 
       - name: Validate Gradle Wrapper
-        uses: gradle/wrapper-validation-action@v2
+        uses: gradle/wrapper-validation-action@v3
 
       - name: Run Dependency Check
         id: dependency-check
@@ -44,7 +44,7 @@ jobs:
 
     steps:
       - name: Comment on PR
-        uses: peter-evans/create-or-update-comment@v3
+        uses: peter-evans/create-or-update-comment@v4
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
