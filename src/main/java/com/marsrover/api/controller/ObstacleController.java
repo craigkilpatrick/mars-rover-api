@@ -1,6 +1,7 @@
 package com.marsrover.api.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,8 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.marsrover.api.domain.Obstacle;
 import com.marsrover.api.repository.ObstacleRepository;
+import com.marsrover.api.exception.ObstacleNotFoundException;
+import com.marsrover.api.assembler.ObstacleModelAssembler;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -25,26 +31,44 @@ import jakarta.validation.Valid;
 public class ObstacleController {
 
     private final ObstacleRepository repository;
+    private final ObstacleModelAssembler assembler;
 
-    public ObstacleController(ObstacleRepository repository) {
+    public ObstacleController(ObstacleRepository repository, ObstacleModelAssembler assembler) {
         this.repository = repository;
+        this.assembler = assembler;
     }
 
     @GetMapping("/obstacles")
     @Operation(summary = "Get all obstacles", description = "Retrieve a list of all obstacles")
     @ApiResponse(responseCode = "200", description = "Obstacles found", content = @Content(mediaType = "application/json"))
-    public ResponseEntity<List<Obstacle>> all() {
-        List<Obstacle> obstacles = repository.findAll();
-        return ResponseEntity.ok(obstacles);
+    public ResponseEntity<CollectionModel<EntityModel<Obstacle>>> all() {
+        List<EntityModel<Obstacle>> obstacles = repository.findAll().stream()
+            .map(assembler::toModel)
+            .collect(Collectors.toList());
+
+        return ResponseEntity.ok(
+            CollectionModel.of(obstacles, linkTo(methodOn(ObstacleController.class).all()).withSelfRel())
+        );
     }
 
     @PostMapping("/obstacles")
     @Operation(summary = "Create a new obstacle", description = "Create a new obstacle with the provided details")
     @ApiResponse(responseCode = "200", description = "Obstacle created successfully", content = @Content(mediaType = "application/json"))
     @ApiResponse(responseCode = "400", description = "Invalid obstacle data provided", content = @Content(mediaType = "application/json"))
-    public ResponseEntity<Obstacle> newObstacle(@RequestBody @Valid Obstacle newObstacle) {
+    public ResponseEntity<EntityModel<Obstacle>> newObstacle(@RequestBody @Valid Obstacle newObstacle) {
         Obstacle savedObstacle = repository.save(newObstacle);
-        return ResponseEntity.ok(savedObstacle);
+        return ResponseEntity.ok(assembler.toModel(savedObstacle));
+    }
+
+    @GetMapping("/obstacles/{id}")
+    @Operation(summary = "Get an obstacle by ID", description = "Retrieve an obstacle by its ID")
+    @ApiResponse(responseCode = "200", description = "Obstacle found", content = @Content(mediaType = "application/json"))
+    @ApiResponse(responseCode = "404", description = "Obstacle not found", content = @Content(mediaType = "application/json"))
+    public ResponseEntity<EntityModel<Obstacle>> findObstacle(@PathVariable Long id) {
+        Obstacle obstacle = repository.findById(id)
+            .orElseThrow(() -> new ObstacleNotFoundException("Obstacle not found with id: " + id));
+
+        return ResponseEntity.ok(assembler.toModel(obstacle));
     }
 
     @DeleteMapping("/obstacles/{id}")
@@ -57,6 +81,6 @@ public class ObstacleController {
                 repository.delete(obstacle);
                 return ResponseEntity.ok().body("Obstacle deleted successfully");
             })
-            .orElse(ResponseEntity.notFound().build());
+            .orElseThrow(() -> new ObstacleNotFoundException("Obstacle not found with id: " + id));
     }
 }
