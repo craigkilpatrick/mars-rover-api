@@ -1,6 +1,7 @@
 package com.marsrover.api.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -81,11 +82,21 @@ class RoverController {
   @ApiResponse(responseCode = "200", description = "Commands processed successfully", content = @Content(mediaType = "application/json"))
   @ApiResponse(responseCode = "400", description = "Invalid command provided", content = @Content(mediaType = "application/json"))
   @ApiResponse(responseCode = "404", description = "Rover not found", content = @Content(mediaType = "application/json"))
-  public ResponseEntity<EntityModel<Rover>> sendCommands(@PathVariable Long id, @RequestBody char[] commands) {
+  public ResponseEntity<?> sendCommands(@PathVariable Long id, @RequestBody char[] commands) {
     Rover rover = repository.findById(id)
       .orElseThrow(() -> new RoverNotFoundException(id));
 
-    roverService.processCommands(rover, commands);
+    RoverService.CommandResult result = roverService.processCommands(rover, commands);
+
+    if (!result.isSuccessful()) {
+      // Return a 200 status with obstacle information
+      return ResponseEntity.ok()
+        .body(Map.of(
+          "rover", assembler.toModel(rover),
+          "status", "obstacle-detected",
+          "message", result.getMessage()
+        ));
+    }
 
     EntityModel<Rover> model = assembler.toModel(rover);
     return ResponseEntity.ok(model);

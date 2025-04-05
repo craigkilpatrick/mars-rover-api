@@ -172,6 +172,11 @@ class RoverControllerTests {
 		Mockito.when(repository.findById(1L)).thenReturn(Optional.of(rover));
 		Mockito.when(assembler.toModel(Mockito.any(Rover.class))).thenReturn(roverModel);
 
+		// Mock the RoverService to return a successful CommandResult
+		RoverService.CommandResult successResult = new RoverService.CommandResult(true, null);
+		Mockito.when(roverService.processCommands(Mockito.any(Rover.class), Mockito.any(char[].class)))
+			.thenReturn(successResult);
+
 		// Act & Assert
 		mockMvc.perform(post("/rovers/{id}/commands", 1L)
 						.contentType(MediaType.APPLICATION_JSON)
@@ -195,5 +200,31 @@ class RoverControllerTests {
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(objectMapper.writeValueAsString(commands)))
 						.andExpect(status().isNotFound());
+	}
+
+	@Test
+	void whenCommandsSentToRoverWithObstacle_thenReturnsObstacleInfo() throws Exception {
+		// Arrange
+		Rover rover = spy(new Rover(0, 0, 'N'));
+		doReturn(1L).when(rover).getId();
+
+		EntityModel<Rover> roverModel = EntityModel.of(rover);
+		char[] commands = {'f', 'f', 'f'};
+
+		Mockito.when(repository.findById(1L)).thenReturn(Optional.of(rover));
+		Mockito.when(assembler.toModel(Mockito.any(Rover.class))).thenReturn(roverModel);
+
+		// Mock the RoverService to return a failed CommandResult with obstacle message
+		RoverService.CommandResult obstacleResult = new RoverService.CommandResult(false, "Obstacle detected at (0, 2)");
+		Mockito.when(roverService.processCommands(Mockito.any(Rover.class), Mockito.any(char[].class)))
+			.thenReturn(obstacleResult);
+
+		// Act & Assert
+		mockMvc.perform(post("/rovers/{id}/commands", 1L)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(objectMapper.writeValueAsString(commands)))
+						.andExpect(status().isOk())
+						.andExpect(jsonPath("$.status", is("obstacle-detected")))
+						.andExpect(jsonPath("$.message", is("Obstacle detected at (0, 2)")));
 	}
 }
