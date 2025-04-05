@@ -21,9 +21,10 @@ services:
       retries: 3
       timeout: 10s
     networks:
-      - frontend
+      - mars-rover-network
     # volumes:
     #   - .:/app
 networks:
-  frontend:
-    name: frontend
+  mars-rover-network:
+    name: mars-rover-network
+    driver: bridge
