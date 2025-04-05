@@ -1,0 +1,10 @@
+{
+  "name": "mars-rover-api",
+  "version": "0.0.0-development",
+  "description": "Mars Rover API for controlling rovers on Mars",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/craigkilpatrick/mars-rover-api.git"
+  }
+}
