@@ -58,13 +58,13 @@ test: deps-check  ## Run unit tests
 
 #-- Execution Control:
 up: ## Run the application using Docker Compose
-	docker compose up -d $(APP_NAME)
+	SHA_TAG=$(SHA_TAG) docker compose up -d $(APP_NAME)
 
 down: ## Stop the application using Docker Compose, but keep volumes
-	docker compose down
+	SHA_TAG=$(SHA_TAG) docker compose down
 
 down-v: ## Stop the application using Docker Compose and remove volumes
-	docker compose down -v
+	SHA_TAG=$(SHA_TAG) docker compose down -v
 
 endif
 
