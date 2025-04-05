@@ -26,6 +26,15 @@ This repository is meant to serve as a starting point for the [Mars Rover Kata](
 > - Implement wrapping at edges. But be careful, planets are spheres.
 > - Implement obstacle detection before each move to a new square. If a given sequence of commands encounters an obstacle, the rover moves up to the last possible point, aborts the sequence and reports the obstacle.
 
+## Key Features
+
+- **Rover Management**: Create, retrieve, update, and delete rovers
+- **Command Processing**: Send movement commands to rovers (forward, backward, left, right)
+- **Grid System**: 100x100 grid with wraparound at edges
+- **Obstacle Detection**: Rovers detect obstacles and stop before collisions
+- **RESTful API**: HATEOAS-compliant API with HAL format responses
+- **Swagger Documentation**: Interactive API documentation
+
 ## Prerequisites
 Before running the Mars Rover API, make sure you have the following prerequisites installed on your system:
 
@@ -65,19 +74,27 @@ To run the Mars Rover API locally, follow these steps:
 
 ## API Definitions
 
+
 ### Swagger UI Endpoint
+
 
    - `<MARS ROVER API URL>/swagger-ui/index.html`(e.g. http://localhost:8080/swagger-ui/index.html)
 
+
 With the application running, navigate to the Swagger UI page to view and test existing Mars Rover API endpoints.
+
 
 ### OpenAPI v3 Endpoint
 
+
    - `<MARS ROVER API URL>/v3/api-docs` (e.g. http://localhost:8080/v3/api-docs)
+
 
 With the application running, navigate to the OpenAPI v3 definition page to see the Open API V3 definition for Mars Rover API.
 
+
 ## Usage
+
 
 The `mars-rover-api` provides a RESTful API for managing rovers on Mars. This documentation explains how to interact with the rovers through HTTP requests.
 
@@ -118,6 +135,7 @@ The base URL for all requests is: `http://localhost:8080`
 - Path Variable: `id` - The ID of the rover.
 - Request Body: Array of characters representing the commands.
 - Response Body: JSON object representing the updated rover.
+- Special Response: When an obstacle is detected, returns a response with status "obstacle-detected" and the rover's position before the obstacle.
 
 #### Valid Rover Commands:
 - `f`: Moves the rover forward one space based on its current direction.
@@ -131,6 +149,30 @@ The base URL for all requests is: `http://localhost:8080`
 - Method: `DELETE`
 - Description: Deletes a rover by its ID.
 - Path Variable: `id` - The ID of the rover.
+
+### Obstacle Management
+
+#### Get All Obstacles
+
+- URL: `/obstacles`
+- Method: `GET`
+- Description: Retrieves a list of all obstacles.
+- Response Body: JSON array of obstacle objects.
+
+#### Create a New Obstacle
+
+- URL: `/obstacles`
+- Method: `POST`
+- Description: Creates a new obstacle.
+- Request Body: JSON object with x and y coordinates.
+- Response Body: JSON object representing the created obstacle.
+
+#### Delete an Obstacle
+
+- URL: `/obstacles/{id}`
+- Method: `DELETE`
+- Description: Deletes an obstacle by its ID.
+- Path Variable: `id` - The ID of the obstacle.
 
 ## Example Requests
 
@@ -163,6 +205,28 @@ The base URL for all requests is: `http://localhost:8080`
     Response Body:
     ```bash
     {"id":1,"x":0,"y":2,"direction":"W","_links":{"self":{"href":"http://localhost:8080/rovers/1"},"rovers":{"href":"http://localhost:8080/rovers"}}}
+    ```
+
+4. Create an obstacle
+
+    Request:
+    ```bash
+    curl -X POST localhost:8080/obstacles -H 'Content-type:application/json' -d '{"x":5,"y":5}'
+    ```
+    Response Body:
+    ```bash
+    {"id":1,"x":5,"y":5,"_links":{"self":{"href":"http://localhost:8080/obstacles/1"},"obstacles":{"href":"http://localhost:8080/obstacles"}}}
+    ```
+
+5. Move a rover that encounters an obstacle
+
+    Request:
+    ```bash
+    curl -X POST localhost:8080/rovers/1/commands -H 'Content-type:application/json' -d '["f","f","f","r","f"]'
+    ```
+    Response Body (when obstacle is at x=5, y=5):
+    ```bash
+    {"status":"obstacle-detected","message":"Obstacle detected at (5,5)","rover":{"id":1,"x":4,"y":5,"direction":"E","_links":{"self":{"href":"http://localhost:8080/rovers/1"},"rovers":{"href":"http://localhost:8080/rovers"}}}}
     ```
 
 ## Postman
