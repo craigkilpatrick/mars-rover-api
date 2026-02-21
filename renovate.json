@@ -45,6 +45,7 @@
   "prHourlyLimit": 2,
   "prConcurrentLimit": 5,
   "ignoreDeps": [
+    "gradle",
     "org.springframework.boot:3.3.x",
     "org.springframework:spring-core:6.1.x",
     "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.x",
