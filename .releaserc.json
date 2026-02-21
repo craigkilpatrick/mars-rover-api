@@ -1,7 +1,7 @@
-module.exports = {
-  branches: ["main"], // Change if needed
-  repositoryUrl: "https://github.com/craigkilpatrick/mars-rover-api.git",
-  plugins: [
+{
+  "branches": ["main"],
+  "repositoryUrl": "https://github.com/craigkilpatrick/mars-rover-api.git",
+  "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
@@ -14,4 +14,4 @@ module.exports = {
       }
     ]
   ]
-};
+}
