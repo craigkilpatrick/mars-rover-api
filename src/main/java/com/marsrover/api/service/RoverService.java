@@ -1,5 +1,9 @@
 package com.marsrover.api.service;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.marsrover.api.domain.Rover;
@@ -13,12 +17,17 @@ public class RoverService {
   private final RoverRepository roverRepository;
   private final ObstacleRepository obstacleRepository;
 
+  private int planetSize = 100;
+
   public RoverService(RoverRepository roverRepository, ObstacleRepository obstacleRepository) {
     this.roverRepository = roverRepository;
     this.obstacleRepository = obstacleRepository;
   }
 
-  private final int planetSize = 100; // Assuming a square grid for simplicity
+  @Value("${mars.planet.size:100}")
+  public void setPlanetSize(int planetSize) {
+    this.planetSize = planetSize;
+  }
 
   /**
    * Result class for command processing that includes success status and optional message.
@@ -56,50 +65,48 @@ public class RoverService {
    * @return CommandResult indicating success or failure with obstacle information
    */
   public CommandResult processCommands(Rover rover, char[] commands) {
+    Set<String> obstacles = buildObstacleSet();
     for (char command : commands) {
-      try {
-        switch (command) {
-          case 'f':
-            if (!moveForward(rover)) {
-              int obstacleX = getForwardX(rover);
-              int obstacleY = getForwardY(rover);
-              return new CommandResult(false, "Obstacle detected at (" + obstacleX + ", " + obstacleY + ")");
-            }
-            break;
-          case 'b':
-            if (!moveBackward(rover)) {
-              int obstacleX = getBackwardX(rover);
-              int obstacleY = getBackwardY(rover);
-              return new CommandResult(false, "Obstacle detected at (" + obstacleX + ", " + obstacleY + ")");
-            }
-            break;
-          case 'l':
-            turnLeft(rover);
-            break;
-          case 'r':
-            turnRight(rover);
-            break;
-          default:
-            rover.toString();
-            throw new InvalidCommandException(rover.getId(), command);
-        }
-        roverRepository.save(rover); // Save the updated rover state after each command
-      } catch (InvalidCommandException e) {
-        throw e;
+      switch (command) {
+        case 'f':
+          if (!moveForward(rover, obstacles)) {
+            int obstacleX = getForwardX(rover);
+            int obstacleY = getForwardY(rover);
+            roverRepository.save(rover);
+            return new CommandResult(false, "Obstacle detected at (" + obstacleX + ", " + obstacleY + ")");
+          }
+          break;
+        case 'b':
+          if (!moveBackward(rover, obstacles)) {
+            int obstacleX = getBackwardX(rover);
+            int obstacleY = getBackwardY(rover);
+            roverRepository.save(rover);
+            return new CommandResult(false, "Obstacle detected at (" + obstacleX + ", " + obstacleY + ")");
+          }
+          break;
+        case 'l':
+          turnLeft(rover);
+          break;
+        case 'r':
+          turnRight(rover);
+          break;
+        default:
+          roverRepository.save(rover);
+          throw new InvalidCommandException(rover.getId(), command);
       }
     }
-    return new CommandResult(); // All commands executed successfully
+    roverRepository.save(rover);
+    return new CommandResult();
   }
 
-  /**
-   * Checks if there is an obstacle at the specified coordinates.
-   *
-   * @param x The x-coordinate to check.
-   * @param y The y-coordinate to check.
-   * @return true if an obstacle exists at the specified coordinates, false otherwise.
-   */
-  public boolean isObstacleAt(int x, int y) {
-    return obstacleRepository.existsByXAndY(x, y);
+  private Set<String> buildObstacleSet() {
+    return obstacleRepository.findAll().stream()
+        .map(o -> o.getX() + "," + o.getY())
+        .collect(Collectors.toSet());
+  }
+
+  private boolean isObstacleAt(Set<String> obstacles, int x, int y) {
+    return obstacles.contains(x + "," + y);
   }
 
   /**
@@ -210,16 +217,14 @@ public class RoverService {
    * Moves the rover forward based on its current direction.
    * @return true if the move was successful, false if an obstacle was detected
    */
-  private boolean moveForward(Rover rover) {
+  private boolean moveForward(Rover rover, Set<String> obstacles) {
     int newX = getForwardX(rover);
     int newY = getForwardY(rover);
 
-    // Check for obstacles before moving
-    if (isObstacleAt(newX, newY)) {
+    if (isObstacleAt(obstacles, newX, newY)) {
       return false;
     }
 
-    // Update rover's position
     rover.setX(newX);
     rover.setY(newY);
     return true;
@@ -229,16 +234,14 @@ public class RoverService {
    * Moves the rover backward based on its current direction.
    * @return true if the move was successful, false if an obstacle was detected
    */
-  private boolean moveBackward(Rover rover) {
+  private boolean moveBackward(Rover rover, Set<String> obstacles) {
     int newX = getBackwardX(rover);
     int newY = getBackwardY(rover);
 
-    // Check for obstacles before moving
-    if (isObstacleAt(newX, newY)) {
+    if (isObstacleAt(obstacles, newX, newY)) {
       return false;
     }
 
-    // Update rover's position
     rover.setX(newX);
     rover.setY(newY);
     return true;

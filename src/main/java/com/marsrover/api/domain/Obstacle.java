@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -15,6 +17,7 @@ import jakarta.validation.constraints.NotNull;
  * Obstacles prevent rovers from moving to the occupied position.
  */
 @Entity
+@Table(indexes = @Index(columnList = "x, y"))
 public class Obstacle {
 
     @Id

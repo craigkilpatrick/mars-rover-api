@@ -5,10 +5,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.marsrover.api.domain.Obstacle;
 import com.marsrover.api.domain.Rover;
 import com.marsrover.api.exception.InvalidCommandException;
 import com.marsrover.api.repository.RoverRepository;
 import com.marsrover.api.repository.ObstacleRepository;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -33,7 +36,7 @@ class RoverServiceTest {
 		roverService = new RoverService(roverRepository, obstacleRepository);
 
 		// Default behavior: no obstacles
-		when(obstacleRepository.existsByXAndY(anyInt(), anyInt())).thenReturn(false);
+		when(obstacleRepository.findAll()).thenReturn(List.of());
 	}
 
 	@Test
@@ -51,7 +54,7 @@ class RoverServiceTest {
 		assertEquals(0, rover.getX());
 		assertEquals(3, rover.getY());
 		assertEquals('N', rover.getDirection());
-		verify(roverRepository, times(3)).save(rover);
+		verify(roverRepository, times(1)).save(rover);
 	}
 
 	@Test
@@ -69,7 +72,7 @@ class RoverServiceTest {
 		assertEquals(3, rover.getX());
 		assertEquals(0, rover.getY());
 		assertEquals('E', rover.getDirection());
-		verify(roverRepository, times(3)).save(rover);
+		verify(roverRepository, times(1)).save(rover);
 	}
 
 	@Test
@@ -87,7 +90,7 @@ class RoverServiceTest {
 		assertEquals(0, rover.getX());
 		assertEquals(97, rover.getY());
 		assertEquals('S', rover.getDirection());
-		verify(roverRepository, times(3)).save(rover);
+		verify(roverRepository, times(1)).save(rover);
 	}
 
 	@Test
@@ -105,7 +108,7 @@ class RoverServiceTest {
 		assertEquals(97, rover.getX());
 		assertEquals(0, rover.getY());
 		assertEquals('W', rover.getDirection());
-		verify(roverRepository, times(3)).save(rover);
+		verify(roverRepository, times(1)).save(rover);
 	}
 
 	@Test
@@ -123,7 +126,7 @@ class RoverServiceTest {
 		assertEquals(0, rover.getX());
 		assertEquals(97, rover.getY());
 		assertEquals('N', rover.getDirection());
-		verify(roverRepository, times(3)).save(rover);
+		verify(roverRepository, times(1)).save(rover);
 	}
 
 	@Test
@@ -141,7 +144,7 @@ class RoverServiceTest {
 		assertEquals(97, rover.getX());
 		assertEquals(0, rover.getY());
 		assertEquals('E', rover.getDirection());
-		verify(roverRepository, times(3)).save(rover);
+		verify(roverRepository, times(1)).save(rover);
 	}
 
 	@Test
@@ -159,7 +162,7 @@ class RoverServiceTest {
 		assertEquals(0, rover.getX());
 		assertEquals(3, rover.getY());
 		assertEquals('S', rover.getDirection());
-		verify(roverRepository, times(3)).save(rover);
+		verify(roverRepository, times(1)).save(rover);
 	}
 
 	@Test
@@ -177,7 +180,7 @@ class RoverServiceTest {
 		assertEquals(3, rover.getX());
 		assertEquals(0, rover.getY());
 		assertEquals('W', rover.getDirection());
-		verify(roverRepository, times(3)).save(rover);
+		verify(roverRepository, times(1)).save(rover);
 	}
 
 	@Test
@@ -195,7 +198,7 @@ class RoverServiceTest {
 		assertEquals(0, rover.getX());
 		assertEquals(0, rover.getY());
 		assertEquals('N', rover.getDirection());
-		verify(roverRepository, times(4)).save(rover);
+		verify(roverRepository, times(1)).save(rover);
 	}
 
 	@Test
@@ -213,7 +216,7 @@ class RoverServiceTest {
 		assertEquals(0, rover.getX());
 		assertEquals(0, rover.getY());
 		assertEquals('N', rover.getDirection());
-		verify(roverRepository, times(4)).save(rover);
+		verify(roverRepository, times(1)).save(rover);
 	}
 
 	@Test
@@ -227,7 +230,7 @@ class RoverServiceTest {
 		assertEquals(0, rover.getX());
 		assertEquals(2, rover.getY());
 		assertEquals('N', rover.getDirection());
-		verify(roverRepository, times(2)).save(rover);
+		verify(roverRepository, times(1)).save(rover);
 	}
 
 	@Test
@@ -237,7 +240,7 @@ class RoverServiceTest {
 		char[] commands = {'f', 'f', 'f', 'f', 'f'};
 
 		// Setup an obstacle at (0, 3)
-		when(obstacleRepository.existsByXAndY(0, 3)).thenReturn(true);
+		when(obstacleRepository.findAll()).thenReturn(List.of(new Obstacle(0, 3)));
 
 		// Act
 		RoverService.CommandResult result = roverService.processCommands(rover, commands);
@@ -248,7 +251,7 @@ class RoverServiceTest {
 		assertEquals(0, rover.getX());
 		assertEquals(2, rover.getY());
 		assertEquals('N', rover.getDirection());
-		verify(roverRepository, times(2)).save(rover);
+		verify(roverRepository, times(1)).save(rover);
 	}
 
 	@Test
@@ -266,7 +269,7 @@ class RoverServiceTest {
 		assertEquals(0, rover.getX());
 		assertEquals(3, rover.getY());
 		assertEquals('N', rover.getDirection());
-		verify(roverRepository, times(3)).save(rover);
+		verify(roverRepository, times(1)).save(rover);
 	}
 
 	@Test
@@ -276,7 +279,7 @@ class RoverServiceTest {
 		char[] commands = {'b', 'b', 'b'};
 
 		// Setup an obstacle at (0, 1)
-		when(obstacleRepository.existsByXAndY(0, 1)).thenReturn(true);
+		when(obstacleRepository.findAll()).thenReturn(List.of(new Obstacle(0, 1)));
 
 		// Act
 		RoverService.CommandResult result = roverService.processCommands(rover, commands);

@@ -24,13 +24,13 @@ public class Rover {
   @Schema(description = "X coordinate position", example = "0", required = true)
   @NotNull(message = "X coordinate must not be null")
   @Min(value = 0, message = "X coordinate must be at least 0")
-  @Max(value = 100, message = "X coordinate must be no more than 100")
+  @Max(value = 99, message = "X coordinate must be no more than 99")
   private int x;
 
   @Schema(description = "Y coordinate position", example = "0", required = true)
   @NotNull(message = "Y coordinate must not be null")
   @Min(value = 0, message = "Y coordinate must be at least 0")
-  @Max(value = 100, message = "Y coordinate must be no more than 100")
+  @Max(value = 99, message = "Y coordinate must be no more than 99")
   private int y;
 
   @Schema(description = "Direction the rover is facing", example = "N", required = true)
@@ -127,6 +127,11 @@ public class Rover {
    * @param obj the reference object with which to compare
    * @return true if this object is the same as the obj argument; false otherwise
    */
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.id, this.x, this.y, this.direction);
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (this == obj) {
