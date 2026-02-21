@@ -1,7 +1,8 @@
 name: Release
 permissions:
-  contents: write  # Updated to write access
+  contents: write
   pull-requests: write
+  issues: write
 
 on:
   push:
@@ -25,7 +26,14 @@ jobs:
           node-version: "24"
 
       - name: Install Dependencies
-        run: npm install -g semantic-release @semantic-release/changelog @semantic-release/git @semantic-release/github @semantic-release/commit-analyzer @semantic-release/release-notes-generator
+        run: |
+          npm install -g semantic-release \
+            @semantic-release/changelog \
+            @semantic-release/git \
+            @semantic-release/github \
+            @semantic-release/commit-analyzer \
+            @semantic-release/release-notes-generator \
+            @semantic-release/npm
 
       - name: Run Semantic Release
         env:
